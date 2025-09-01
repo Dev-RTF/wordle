@@ -56,7 +56,7 @@ def main() -> None:
     while can_guess:
         if attempts < 5:
             user_guess: str = input("Guess: ")
-            if len(user_guess) != 5:
+            if len(user_guess) != 5: # TODO: Make game continue to ask until user provides valid input
                 print("The word needs to have 5 letters!")
 
             else:
@@ -74,7 +74,7 @@ def main() -> None:
                 can_guess = False
 
         # end game - success
-        if guess_info["isPerfect"]:
+        if guess_info["isPerfect"]: # TODO: FIX THIS "PROBLEM"
             print("Congratulations for guessing the word!")
             play_again: str = input("Would you like to play another round? (Y/N) ")
             if play_again.upper() == "Y":
