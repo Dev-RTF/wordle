@@ -1,12 +1,10 @@
+from word_list import words
 import random
 from typing import TypedDict
 
 class GuessInfo(TypedDict): # so the type checker won't complain
     isPerfect: bool
     result_letters: list[str]
-
-words = ["other", "first", "click", "price", "state", "world", "music", "video", "order", "group", "under", "hotel", "store", "local", "phone", "board", "moral", "mayor", "prime", "watch", "power", "peace", "point", "limit", "pound", "thank", "think", "value", "valid", "wheel", "water", "solve", "force", "smart", "focus", "sugar", "radio", "voice", "throw", "magic", "major", "sight", "judge", "earth", "media", "green", "grass", "drama", "image", "dozen"]
-# 50 words
 
 def display_grid(letters: list[str], attempts: int) -> None:
     

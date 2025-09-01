@@ -1,0 +1,2 @@
+words = ["other", "first", "click", "price", "state", "world", "music", "video", "order", "group", "under", "hotel", "store", "local", "phone", "board", "moral", "mayor", "prime", "watch", "power", "peace", "point", "limit", "pound", "thank", "think", "value", "valid", "wheel", "water", "solve", "force", "smart", "focus", "sugar", "radio", "voice", "throw", "magic", "major", "sight", "judge", "earth", "media", "green", "grass", "drama", "image", "dozen"]
+# 50 words
