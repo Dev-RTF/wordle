@@ -8,20 +8,26 @@ class GuessInfo(TypedDict): # so the type checker won't complain
 words = ["other", "first", "click", "price", "state", "world", "music", "video", "order", "group", "under", "hotel", "store", "local", "phone", "board", "moral", "mayor", "prime", "watch", "power", "peace", "point", "limit", "pound", "thank", "think", "value", "valid", "wheel", "water", "solve", "force", "smart", "focus", "sugar", "radio", "voice", "throw", "magic", "major", "sight", "judge", "earth", "media", "green", "grass", "drama", "image", "dozen"]
 # 50 words
 
-"""
-displays the wordle grid in the format
-_____________________
-| 1 | 2 | 3 | 4 | 5 |
-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-"""
 def display_grid(letters: list[str], attempts: int) -> None:
+    
+    """
+    displays the wordle grid in the format
+    _____________________
+    | 1 | 2 | 3 | 4 | 5 |
+    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    """
+
     print("_____________________")
     print(f"| {letters[0]} | {letters[1]} | {letters[2]} | {letters[3]} | {letters[4]} |")
     print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
     print(f"Attempt: {attempts}/5")
 
-# if letter is in word and in correct place, wrap the letter with ⸨⸩, if letter is in word but not in correct place, wrap with [], else if not in word, wrap with --
 def check_guess(user_guess: str, solution: str) -> GuessInfo:
+    
+    """
+    If a letter of the user_guess is in solution and in the correct place, wrap the letter with ⸨⸩. If letter of user_guess is in solution but not in the correct place, wrap with []. Otherwise if the letter is not in word the word at all, wrap with --.
+    """
+
     correct_letters: int = 0
     guess_info: GuessInfo = {
         "isPerfect": False,
@@ -56,13 +62,23 @@ def main() -> None:
     while can_guess:
         if attempts < 5:
             user_guess: str = input("Guess: ")
-            if len(user_guess) != 5: # TODO: Make game continue to ask until user provides valid input
+            if len(user_guess) != 5:
                 print("The word needs to have 5 letters!")
 
             else:
                 attempts += 1
                 guess_info: GuessInfo = check_guess(user_guess.upper(), solution.upper())
                 display_grid(guess_info["result_letters"], attempts)
+                # end game - success
+                if guess_info["isPerfect"]:
+                    print("Congratulations for guessing the word!")
+                    play_again: str = input("Would you like to play another round? (Y/N) ")
+                    if play_again.upper() == "Y":
+                        solution = random.choice(words)
+                        attempts = 0
+                    else:
+                        print("Thanks for playing!")
+                        can_guess = False
         else:
             # end game - fail
             play_again: str = input("Sorry, you ran out of guesses! Would you like to play again? (Y/N) ")
@@ -73,17 +89,16 @@ def main() -> None:
                 print("Thanks for playing!")
                 can_guess = False
 
-        # end game - success
-        if guess_info["isPerfect"]: # TODO: FIX THIS "PROBLEM"
-            print("Congratulations for guessing the word!")
-            play_again: str = input("Would you like to play another round? (Y/N) ")
-            if play_again.upper() == "Y":
-                solution = random.choice(words)
-                attempts = 0
-            else:
-                print("Thanks for playing!")
-                can_guess = False
+"""
+--- Test cases and notes ---
+6 letter word: Freaks
+Result: As intended, player gets message to enter 5 letter words and is able to continue playing
 
+Word with 2 of the same letter: Green
+Result: "| ⸨G⸩ | ⸨R⸩ | ⸨E⸩ | [N] | [E] |", if player enters "GREEE", the program will mark the first 2 E's as correct, but will also mark the last E as in the word as well
+
+TODO: Possible fix: List of "letters remaining" - For each guess, with a list of letters remaining, the program will remove the letters that have been already verified
+"""
 
 if __name__ == "__main__":
     main()
