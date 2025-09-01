@@ -1,7 +1,7 @@
 import random
 from typing import TypedDict
 
-class GuessInfo(TypedDict):
+class GuessInfo(TypedDict): # so the type checker won't complain
     isPerfect: bool
     result_letters: list[str]
 
@@ -30,7 +30,12 @@ def check_guess(user_guess: str, solution: str) -> GuessInfo:
         "isPerfect": False,
         "result_letters": [], # 5 spaces for 5 letters 
     }
-    
+
+    #"""
+    print(f"user_guess: {user_guess}")
+    print(f"solution: {solution}")
+    #"""
+
     for i, letter in enumerate(user_guess): # enumerate() returns pair of (index, value) while looping
         if letter in solution:
             if letter == solution[i]:
@@ -45,21 +50,35 @@ def check_guess(user_guess: str, solution: str) -> GuessInfo:
     
     return guess_info
 
-# extract list from value assigned to result_letters from dict guess_info
-def extract_guess_letters(guess_info: GuessInfo) -> list[str]:
-    return guess_info["result_letters"]
-
 def main() -> None:
+    can_guess: bool = True
     attempts: int = 0
-    playing: bool = attempts < 5
+    solution: str = choose_word(words)
     print("--------- WORDLE ULTRALITE ---------")
-    while playing:
-        solution: str = choose_word(words)
-        user_guess: str = input("Guess: ")
-        attempts -= 1
-        guess_info: GuessInfo = check_guess(solution, user_guess)
-        display_grid(extract_guess_letters(guess_info), attempts)
-        
+    while can_guess:
+        if attempts < 5:
+            user_guess: str = input("Guess: ")
+            attempts += 1
+            guess_info: GuessInfo = check_guess(user_guess, solution)
+            display_grid(guess_info["result_letters"], attempts)
+        else:
+            # end game - fail
+            play_again: str = input("Sorry, you ran out of guesses! Would you like to play again? (Y/N)")
+            if play_again.upper() == "Y":
+                attempts = 0
+                solution = choose_word(words)
+            else:
+                can_guess = False
+
+        # end game - success
+        if guess_info["isPerfect"]:
+            print("Congratulations for guessing the word!")
+            play_again: str = input("Would you like to play another round? (Y/N)")
+            if play_again.upper() == "Y":
+                solution = choose_word(words)
+            else:
+                print("Thanks for playing!")
+                can_guess = False
 
 
 if __name__ == "__main__":
