@@ -32,10 +32,11 @@ def check_guess(user_guess: str, solution: str) -> GuessInfo:
         "result_letters": [], # 5 spaces for 5 letters 
     }
 
-    #"""
+    """
+    # Comment these 2 lines out when not doing testing to avoid the solution being spoiled!
     print(f"user_guess: {user_guess}")
     print(f"solution: {solution}")
-    #"""
+    """
 
     for i, letter in enumerate(user_guess): # enumerate() returns pair of (index, value) while looping
         if letter in solution:
