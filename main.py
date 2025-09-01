@@ -20,9 +20,6 @@ def display_grid(letters: list[str], attempts: int) -> None:
     print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
     print(f"Attempt: {attempts}/5")
 
-def choose_word(choices: list[str]) -> str:
-    return random.choice(choices)
-
 # if letter is in word and in correct place, wrap the letter with ⸨⸩, if letter is in word but not in correct place, wrap with [], else if not in word, wrap with --
 def check_guess(user_guess: str, solution: str) -> GuessInfo:
     correct_letters: int = 0
@@ -53,29 +50,36 @@ def check_guess(user_guess: str, solution: str) -> GuessInfo:
 def main() -> None:
     can_guess: bool = True
     attempts: int = 0
-    solution: str = choose_word(words)
+    solution: str = random.choice(words)
     print("--------- WORDLE ULTRALITE ---------")
+
     while can_guess:
         if attempts < 5:
             user_guess: str = input("Guess: ")
-            attempts += 1
-            guess_info: GuessInfo = check_guess(user_guess, solution)
-            display_grid(guess_info["result_letters"], attempts)
+            if len(user_guess) != 5:
+                print("The word needs to have 5 letters!")
+
+            else:
+                attempts += 1
+                guess_info: GuessInfo = check_guess(user_guess.upper(), solution.upper())
+                display_grid(guess_info["result_letters"], attempts)
         else:
             # end game - fail
-            play_again: str = input("Sorry, you ran out of guesses! Would you like to play again? (Y/N)")
+            play_again: str = input("Sorry, you ran out of guesses! Would you like to play again? (Y/N) ")
             if play_again.upper() == "Y":
                 attempts = 0
-                solution = choose_word(words)
+                solution = random.choice(words)
             else:
+                print("Thanks for playing!")
                 can_guess = False
 
         # end game - success
         if guess_info["isPerfect"]:
             print("Congratulations for guessing the word!")
-            play_again: str = input("Would you like to play another round? (Y/N)")
+            play_again: str = input("Would you like to play another round? (Y/N) ")
             if play_again.upper() == "Y":
-                solution = choose_word(words)
+                solution = random.choice(words)
+                attempts = 0
             else:
                 print("Thanks for playing!")
                 can_guess = False
